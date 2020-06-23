@@ -159,6 +159,31 @@ def intersection_point(p1, p2, p3, p4):
         print("No single intersection point detected")
 
 
+def delaunay_triangulation(p1, p2, p3):
+    """
+    :param p1: point one
+    :param p2: point two
+    :param p3: point three
+    :return: Delaunay triangulation intermediate values
+    """
+    p1 = np.array(p1)
+    p2 = np.array(p2)
+    p3 = np.array(p3)
+
+    v = p2 - p1
+    w = p3 - p1
+
+    lambda_ = 0.5 * np.linalg.det(np.array([[np.dot(v, v), np.dot(v, w)], [np.dot(w, w), np.dot(w, w)]])) / \
+        np.linalg.det(np.array([[np.dot(v, v), np.dot(v, w)], [np.dot(v, w), np.dot(w, w)]]))
+
+    mu = 0.5 * np.linalg.det(np.array([[np.dot(v, v), np.dot(v, v)], [np.dot(v, w), np.dot(w, w)]])) / \
+        np.linalg.det(np.array([[np.dot(v, v), np.dot(v, w)], [np.dot(v, w), np.dot(w, w)]]))
+
+    m = p1 + lambda_ * v + mu * w
+
+    print(f"Centre of circumcircle of points p1, p2, p3: {m}")
+
+
 ##################
 # HELPER FUNCTIONS
 ##################
@@ -175,6 +200,11 @@ def det(p, q, r):
     return np.linalg.det(X)
 
 
+##############
+# MAIN PROGRAM
+##############
+
+
 def main():
     """
     a = np.array([0, 0])
@@ -183,7 +213,6 @@ def main():
     answer = manhattan_distance(a, b)
     print(answer)
     """
-
     points = [(14, 69), (67, 9), (91, 29), (68, 61), (73, 73), (106, 96), (92, 116)]
     polygon_area(points)
 
@@ -199,6 +228,11 @@ def main():
     line_intersection(p1, p2, p3, p4)
 
     intersection_point(p1, p2, p3, p4)
+
+    p1 = [1, 1]
+    p2 = [3, 3]
+    p3 = [2, 4]
+    delaunay_triangulation(p1, p2, p3)
 
 
 if __name__ == "__main__":
